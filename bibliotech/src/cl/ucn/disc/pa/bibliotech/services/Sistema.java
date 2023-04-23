@@ -8,6 +8,7 @@ import cl.ucn.disc.pa.bibliotech.model.Libro;
 import cl.ucn.disc.pa.bibliotech.model.Socio;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import edu.princeton.cs.stdlib.StdOut;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -61,10 +62,10 @@ public final class Sistema {
             this.socios = Utils.append(this.socios, new Socio("John", "Doe", "john.doe@ucn.cl", 1, "john123"));
 
             // creo un libro y lo agrego al arreglo de libros.
-            this.libros = Utils.append(this.libros, new Libro("1491910771", "Head First Java: A Brain-Friendly Guide", " Kathy Sierra", "Programming Languages"));
+            this.libros = Utils.append(this.libros, new Libro("1491910771", "Head First Java: A Brain-Friendly Guide", " Kathy Sierra", "Programming Languages", 5));
 
             // creo otro libro y lo agrego al arreglo de libros.
-            this.libros = Utils.append(this.libros, new Libro("2491910771", "Effective Java", "Joshua Bloch", "Programming Languages"));
+            this.libros = Utils.append(this.libros, new Libro("1491910771", "Effective Java", "Joshua Bloch", "Programming Languages", 4));
 
         } finally {
             // guardo la informacion.
@@ -86,11 +87,19 @@ public final class Sistema {
             throw new IllegalArgumentException("El numero de socio no es valido!");
         }
 
-        // TODO: buscar el socio dado su numero.
+        Socio socio = this.buscarSocio(numeroDeSocio);
 
-        // TODO: verificar su clave.
+        if (socio == null) {
+            throw new IllegalArgumentException("El socio con numero " + numeroDeSocio + " no existe o no se encuentra disponible.");
+        }
 
-        // TODO: asignar al atributo socio el socio encontrado.
+        Socio socioContrasenia = this.validarContrasenia(contrasenia);
+
+        if (socioContrasenia == null) {
+            throw new IllegalArgumentException("La clave es incorrecta.");
+        }
+
+        this.socio = socio;
 
     }
 
@@ -123,12 +132,19 @@ public final class Sistema {
         // agrego el libro al socio.
         this.socio.agregarLibro(libro);
 
-        // TODO: eliminar el libro de los disponibles
+        // TODO: eliminar el libro de los disponibles // Listo
+
+        Libro eliminar = this.eliminarLibro(libro);
+
+        if (eliminar == null) {
+            throw new IllegalArgumentException("No se encuentra el libro con isbn " + isbn + " dentro de la lista de libros disponibles.");
+        }
 
         // se actualiza la informacion de los archivos
         this.guardarInformacion();
 
     }
+
 
     /**
      * Obtiene un String que representa el listado completo de libros disponibles.
@@ -138,22 +154,28 @@ public final class Sistema {
     public String obtegerCatalogoLibros() {
 
         StringBuilder sb = new StringBuilder();
-        for (Libro libro : this.libros) {
-            sb.append("Titulo    : ").append(libro.getTitulo()).append("\n");
-            sb.append("Autor     : ").append(libro.getAutor()).append("\n");
-            sb.append("ISBN      : ").append(libro.getIsbn()).append("\n");
-            sb.append("Categoria : ").append(libro.getCategoria()).append("\n");
-            sb.append("\n");
+        try {
+            for (Libro libro : this.libros) {
+                sb.append("Titulo    : ").append(libro.getTitulo()).append("\n");
+                sb.append("Autor     : ").append(libro.getAutor()).append("\n");
+                sb.append("ISBN      : ").append(libro.getIsbn()).append("\n");
+                sb.append("Categoria : ").append(libro.getCategoria()).append("\n");
+                sb.append("Calificacion : ").append(libro.getCalificacion()).append("\n");
+                sb.append("\n");
+            }
+        } catch (NullPointerException e) {
+            StdOut.print("No hay libros disponibles.");
         }
 
         return sb.toString();
     }
 
+
     /**
      * Metodo que busca un libro en los libros disponibles.
      *
      * @param isbn a buscar.
-     * @return el libro o null si no fue encontrado.l
+     * @return el libro o null si no fue encontrado.
      */
     private Libro buscarLibro(final String isbn) {
         // recorro el arreglo de libros.
@@ -164,6 +186,18 @@ public final class Sistema {
             }
         }
         // no lo encontre, retorno null.
+        return null;
+    }
+
+    private Libro eliminarLibro(final Libro libro) {
+        StdOut.print(this.libros);
+        for (Libro eliminar : this.libros) {
+            if (eliminar.equals(libro)) {
+                this.libros = null;
+                return eliminar;
+            }
+        }
+
         return null;
     }
 
@@ -205,5 +239,46 @@ public final class Sistema {
 
         return "Nombre: " + this.socio.getNombreCompleto() + "\n"
                 + "Correo Electronico: " + this.socio.getCorreoElectronico();
+
     }
+
+    private Socio buscarSocio(final int numeroDeSocio) {
+        for (Socio socio : this.socios) {
+            if (socio.getNumeroDeSocio() == numeroDeSocio) {
+                return socio;
+            }
+        }
+        return null;
+    }
+
+    private Socio validarContrasenia(final String contrasenia) {
+        for (Socio socioContrasenia : this.socios) {
+            if (socioContrasenia.getContrasenia().equals(contrasenia)) {
+                return socioContrasenia;
+            }
+        }
+        return null;
+    }
+
+    public Socio cambiarContrasenia(final String contrasenia) {
+        if (contrasenia == null || contrasenia.length() == 0) {
+            throw new IllegalArgumentException("Contraseña no valida.");
+        }
+        this.socio.setContrasenia(contrasenia);
+        return null;
+    }
+
+    public Socio cambiarCorreoElectronico(final String correoElectronico) {
+        Utils.validarEmail(correoElectronico);
+        this.socio.setCorreoElectronico(correoElectronico);
+        return null;
+    }
+
+    public void calificarLibro(final int calificacion) {
+        if (calificacion > 5 & calificacion < 0) {
+
+        }
+    }
+
+
 }

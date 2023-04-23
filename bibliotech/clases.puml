@@ -2,6 +2,37 @@
 left to right direction
 skin rose
 
-' TODO: Add the class model
+class Libro {
+  - isbn: String
+  - Titulo: String
+  - autor: String
+  - categoria: String
+  - calificacion: int
+  + getIsbn(): String
+  + getTitulo(): String
+  + getAutor(): String
+  + getCategoria(): String
+  + getCalificacion(): int
+  + setCalificacion(calificacion: int)
+}
 
+class Socio {
+  - nombre: String
+  - apellido: String
+  - correoElectronico: String
+  - numeroDeSocio: int
+  - contrasenia: String
+  - librosEnPrestamo: Libro[]
+  + getNombre(): String
+  + getApellido(): String
+  + getNombreCompleto(): String
+  + getCorreoElectronico(): String
+  + setCorreoElectronico(correoElectronico: String)
+  + getNumeroDeSocio(): int
+  + getContrasenia(): String
+  + setContrasenia(contrasenia: String)
+  + agregarLibro(libro: Libro)
+}
+
+Socio "0..1" --  "0..5" Libro : pide prestado >
 @enduml

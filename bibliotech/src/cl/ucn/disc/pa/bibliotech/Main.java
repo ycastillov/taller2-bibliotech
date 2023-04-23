@@ -96,7 +96,7 @@ public final class Main {
             switch (opcion) {
                 case "1" -> menuPrestamo(sistema);
                 case "2" -> editarInformacion(sistema);
-                // case "3" -> TODO: Crear metodo de calificar libro.
+                case "3" -> calificarLibro(sistema);
                 case "4" -> sistema.cerrarSession();
                 default -> StdOut.println("Opcion no valida, intente nuevamente");
             }
@@ -143,10 +143,40 @@ public final class Main {
     }
 
     private static void cambiarContrasenia(Sistema sistema) {
-        // TODO: implementar este metodo
+        StdOut.print("[*] Cambio de Contraseña [*]");
+        StdOut.print("Ingrese su nueva contraseña: ");
+        String nuevaContrasenia = StdIn.readLine();
+
+        try {
+            sistema.cambiarContrasenia(nuevaContrasenia);
+        } catch (IllegalArgumentException ex) {
+            StdOut.print("Ocurrio un error: " + ex.getMessage());
+            return;
+
+        }
+        editarInformacion(sistema);
     }
 
     private static void editarCorreo(Sistema sistema) {
-        // TODO: implementar este metodo
+        StdOut.print("[*] Cambio de Contraseña [*]");
+        StdOut.print("Ingrese su nueva contraseña: ");
+        String nuevaContrasenia = StdIn.readLine();
+
+        try {
+            sistema.cambiarCorreoElectronico(nuevaContrasenia);
+        } catch (IllegalArgumentException ex) {
+            StdOut.print("Ocurrio un error: " + ex.getMessage());
+            return;
+
+        }
+        editarInformacion(sistema);
+    }
+
+    private static void calificarLibro(Sistema sistema) {
+        StdOut.print("[*] Calificar a un libro [*]");
+        StdOut.print(sistema.obtegerCatalogoLibros());
+
+        StdOut.print("Ingrese el ISBN del libro que guste calificar: ");
+
     }
 }

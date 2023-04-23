@@ -2,6 +2,21 @@
 left to right direction
 skin rose
 
-' TODO: Add the domain model
+entity Biblioteca{}
+
+entity Libro{
+  titulo
+  autor
+  categoria
+}
+
+entity Socio{
+  nombre
+  numero de socio
+  libros en prestamo
+}
+
+Biblioteca "1" -- "*" Libro
+Biblioteca "0..1" -- "1..*" Socio
 
 @enduml

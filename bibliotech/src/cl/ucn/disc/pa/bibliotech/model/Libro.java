@@ -31,12 +31,10 @@ public final class Libro {
      */
     private String categoria;
 
-    // TODO: Agregar la calificacion. // Listo
-
     /**
      * The Calificacion
      */
-    private String calificacion;
+    private int calificacion;
 
     /**
      * The Constructor.
@@ -46,8 +44,10 @@ public final class Libro {
      * @param autor     del libro
      * @param categoria del libro.
      */
-    public Libro(final String isbn, final String titulo, final String autor, final String categoria) {
-        // TODO: agregar validacion de ISBN
+    public Libro(final String isbn, final String titulo, final String autor, final String categoria, final int calificacion) {
+        if (isbn == null || isbn.length() == 0) {
+            throw new IllegalArgumentException("ISBN no valido !");
+        }
         this.isbn = isbn;
 
         // validacion del titulo
@@ -56,11 +56,20 @@ public final class Libro {
         }
         this.titulo = titulo;
 
-        // TODO: Agregar validacion
+        if (autor == null || autor.length() == 0) {
+            throw new IllegalArgumentException("Autor no valido!");
+        }
         this.autor = autor;
 
-        // TODO: Agregar validacion
+        if (categoria == null || categoria.length() == 0) {
+            throw new IllegalArgumentException("Categoria no valida!");
+        }
         this.categoria = categoria;
+
+        if (calificacion >= 5 | calificacion <= 0) {
+            throw new IllegalArgumentException("Calificacion no valida!");
+        }
+        this.calificacion = calificacion;
     }
 
     /**
@@ -89,5 +98,21 @@ public final class Libro {
      */
     public String getCategoria() {
         return this.categoria;
+    }
+
+    /**
+     * @return the calificacion
+     */
+    public int getCalificacion() {
+        return this.calificacion;
+    }
+
+    /**
+     * Dar una calificacion a un libro
+     *
+     * @param calificacion a determinar.
+     */
+    public void setCalificacion(int calificacion) {
+        this.calificacion = calificacion;
     }
 }

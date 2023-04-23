@@ -59,20 +59,28 @@ public final class Socio {
      */
     public Socio(String nombre, String apellido, String correoElectronico, int numeroDeSocio, String contrasenia) {
 
-        // TODO: agregar validacion
+        if (nombre == null || nombre.length() == 0) {
+            throw new IllegalArgumentException("Nombre no valido!");
+        }
         this.nombre = nombre;
 
-        // TODO: agregar validacion
+        if (apellido == null || apellido.length() == 0) {
+            throw new IllegalArgumentException("Apellido no valido!");
+        }
         this.apellido = apellido;
 
         // metodo estatico para validacion de email.
         Utils.validarEmail(correoElectronico);
         this.correoElectronico = correoElectronico;
 
-        // TODO: agregar validacion
+        if (numeroDeSocio <= 0) {
+            throw new IllegalArgumentException("Numero de socio no valido.");
+        }
         this.numeroDeSocio = numeroDeSocio;
 
-        // TODO: agregar validacion
+        if (contrasenia == null || contrasenia.length() == 0) {
+            throw new IllegalArgumentException("Contrasenia no valida.");
+        }
         this.contrasenia = contrasenia;
     }
 
@@ -105,6 +113,16 @@ public final class Socio {
     }
 
     /**
+     * Cambia el correo electronico del Socio
+     *
+     * @param correoElectronico a cambiar
+     */
+    public void setCorreoElectronico(String correoElectronico) {
+        this.correoElectronico = correoElectronico;
+
+    }
+
+    /**
      * @return el numero del Socio.
      */
     public int getNumeroDeSocio() {
@@ -116,6 +134,15 @@ public final class Socio {
      */
     public String getContrasenia() {
         return this.contrasenia;
+    }
+
+    /**
+     * Cambia la contrasenia del Socio
+     *
+     * @param contrasenia a cambiar.
+     */
+    public void setContrasenia(String contrasenia) {
+        this.contrasenia = contrasenia;
     }
 
     /**
@@ -131,5 +158,5 @@ public final class Socio {
         // agrego el libro
         Utils.append(this.librosEnPrestamo, libro);
     }
-
+    
 }
